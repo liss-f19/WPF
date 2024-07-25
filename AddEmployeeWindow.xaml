@@ -1,0 +1,86 @@
+﻿<Window x:Class="Employees_management.AddEmployeeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Employees_management"
+        Title="Add New Employee" Width="500" Height="500" 
+        WindowStartupLocation="CenterScreen" 
+        Topmost="True" 
+        FontSize="14"
+        ResizeMode="CanMinimize">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/SharedResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Margin="60,10,60,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="151"/>
+            <ColumnDefinition Width="327*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="First Name:" Grid.Column="0" VerticalAlignment="Center" Margin="10,0,10,0" Height="19"/>
+        <TextBox Name="FirstNameTextBox" Grid.Column="1" Grid.Row="0" MaxLength="50" Margin="10,10,8,10" />
+
+        <TextBlock Text="Last Name:" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="10,0,10,0" Height="18"/>
+        <TextBox Name="LastNameTextBox" Grid.Column="1" Grid.Row="1" MaxLength="50" Margin="10,10,8,10" />
+
+        <TextBlock Text="Sex:" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Margin="10,0,10,0" Height="18"/>
+        <StackPanel Grid.Column="1" Grid.Row="2" Margin="5,5,3,5">
+            <RadioButton GroupName="Sex" Content="Male" Name="MaleRadioButton" IsChecked="True" Margin="10"/>
+            <RadioButton GroupName="Sex" Content="Female" x:Name="FemaleRadioButton" Margin="10"/>
+        </StackPanel>
+
+        <TextBlock Text="Birth Date:" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Margin="10,0,10,0" Height="19"/>
+        <DatePicker Name="BirthDatePicker" Grid.Column="1" Grid.Row="3" Margin="10,10,8,10"/>
+
+        <TextBlock Text="Birth Country:" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" Margin="10,0,10,0" Height="19"/>
+        <TextBox Name="BirthCountryTextBox" Grid.Column="1" Grid.Row="4" MaxLength="100" Margin="10,10,8,10"/>
+
+        <TextBlock Text="Salary:" Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" Margin="10,0,10,0" Height="18"/>
+        <TextBox Name="SalaryTextBox" Grid.Column="1" Grid.Row="5" Margin="10,10,8,10">
+            <TextBox.Text>
+                <Binding Path="Salary" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
+                    <Binding.ValidationRules>
+                        <local:SalaryValidationRule MinSalary="5000"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent, TargetNullValue=''}"/>
+                    <Style.Triggers>
+                        <Trigger Property="Validation.HasError" Value="true">
+                            <Setter Property="Foreground" Value="Red"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <TextBlock Text="Salary Currency:" Grid.Column="0" Grid.Row="6" VerticalAlignment="Center" Margin="10,0,10,0" Height="19"/>
+        <ComboBox Name="SalaryCurrencyComboBox" Grid.Column="1" Grid.Row="6" ItemsSource="{Binding Source={StaticResource CurrencyEnum}}" SelectedIndex="0" Margin="10,10,8,10" />
+
+        <TextBlock Text="Company Role:" Grid.Column="0" Grid.Row="7" VerticalAlignment="Center" Margin="10,0,10,0" Height="19"/>
+        <ComboBox Name="CompanyRoleComboBox" Grid.Column="1" Grid.Row="7" ItemsSource="{Binding Source={StaticResource RoleEnum}}" SelectedIndex="0" Margin="10,10,8,10" />
+
+        <Button x:Name="AddButton" Content="Add" Click="AddButton_Click" Margin="10,20,8,25" Grid.Row="8" Grid.ColumnSpan="2"/>
+        <Button x:Name="AddButton_Copy" Content="Add" Click="AddButton_Click" Margin="10,20,8,10" Grid.Row="8" Grid.ColumnSpan="2"/>
+    </Grid>
+</Window>
